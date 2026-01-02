@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Secure To-Do App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        h1 { color: #333; }
+        form { margin-bottom: 20px; }
+        input[type="text"] { padding: 5px; width: 250px; }
+        button { padding: 5px 10px; }
+        ul { list-style: none; padding: 0; }
+        li { margin-bottom: 8px; }
+        .done { text-decoration: line-through; color: gray; }
+        a { margin-left: 10px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>Secure To-Do List ✅</h1>
+
+    <form action="/add" method="POST">
+        <input type="text" name="title" placeholder="New task..." required>
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        {% for task in tasks %}
+            <li>
+                <span class="{{ 'done' if task['is_done'] else '' }}">
+                    {{ task['title'] | e }}
+                </span>
+                {% if not task['is_done'] %}
+                    <a href="/complete/{{ task['id'] }}">Complete</a>
+                {% endif %}
+                <a href="/delete/{{ task['id'] }}">Delete</a>
+            </li>
+        {% else %}
+            <li>No tasks yet. Add one above!</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
