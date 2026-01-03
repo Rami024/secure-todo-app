@@ -1,42 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Secure To-Do App</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 30px; }
-        h1 { color: #333; }
-        form { margin-bottom: 20px; }
-        input[type="text"] { padding: 5px; width: 250px; }
-        button { padding: 5px 10px; }
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 8px; }
-        .done { text-decoration: line-through; color: gray; }
-        a { margin-left: 10px; font-size: 0.9em; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure To-Do List</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Secure To-Do List ✅</h1>
+  <div class="page">
+    <div class="card">
 
-    <form action="/add" method="POST">
-        <input type="text" name="title" placeholder="New task..." required>
+      <h1>Secure To-Do List</h1>
+
+      <form class="add-form" method="POST" action="/add">
+        <input type="text" name="title" placeholder="New task" autocomplete="off">
         <button type="submit">Add</button>
-    </form>
+      </form>
 
-    <ul>
-        {% for task in tasks %}
-            <li>
-                <span class="{{ 'done' if task['is_done'] else '' }}">
-                    {{ task['title'] | e }}
-                </span>
+      {% if tasks|length == 0 %}
+        <p class="empty">No tasks yet. Add one above!</p>
+      {% else %}
+        <ul class="tasks">
+          {% for task in tasks %}
+            <li class="task {% if task['is_done'] %}done{% endif %}">
+              <span class="task-title">{{ task['title'] }}</span>
+
+              <div class="actions">
                 {% if not task['is_done'] %}
-                    <a href="/complete/{{ task['id'] }}">Complete</a>
+                  <a class="btn primary" href="/complete/{{ task['id'] }}">Complete</a>
+                {% else %}
+                  <span class="badge">Completed</span>
                 {% endif %}
-                <a href="/delete/{{ task['id'] }}">Delete</a>
+                <a class="btn danger" href="/delete/{{ task['id'] }}">Delete</a>
+              </div>
             </li>
-        {% else %}
-            <li>No tasks yet. Add one above!</li>
-        {% endfor %}
-    </ul>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+    </div>
+  </div>
 </body>
 </html>
