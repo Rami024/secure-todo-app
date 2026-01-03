@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual env
+venv/
+
+# DB file
+todo.db
+
+# Pytest cache
+.pytest_cache/
+
+# OS / editor
+.DS_Store
+.vscode/
+
+# Docker
+*.log
